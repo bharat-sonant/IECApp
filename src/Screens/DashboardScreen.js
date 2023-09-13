@@ -17,7 +17,9 @@ const DashboardScreen = ({ navigation }) => {
     }
 
     const handleCaptureEvent = async () => {
-        console.log(database.app.options.databaseURL);
+        navigation.navigate("CreateEvent", {
+            buttonKey: "createCaptureEvent"
+        });
     }
 
     const handleCloseDialog = () => {

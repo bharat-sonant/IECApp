@@ -4,63 +4,65 @@ import { ColorCode } from '../Services/colorCode'
 import addImage from "../Assets/add.png";
 import backImage from "../Assets/back.png";
 import pencilImage from "../Assets/pencil.png";
-import { Dropdown } from 'react-native-element-dropdown';
-import { monthList, yearList } from '../Services/commonServices';
-import { Card, Title } from 'react-native-paper';
+import { Card } from 'react-native-paper';
 import { getEventListData } from '../Services/eventListService';
+import { useIsFocused } from '@react-navigation/native';
 
-const EventList = ({navigation}) => {
-    const [monthListval, setMonthListVal] = useState();
-    const [yearListVal, setyearListVal] = useState();
+const EventList = ({ navigation }) => {
+    const isFocused = useIsFocused();
     const [loading, setLoading] = useState(true);
-    const [selectedMonth, setSelectedMonth] = useState();
-    const [selectedYear, setSelectedYear] = useState();
-
-    // var events = [
-    //     { title: "Annual Charity Gala" },
-    //     { title: "Tech Conference 2023" },
-    //     { title: "Music Festival" },
-    //     { title: "Sports Championship" },
-    //     { title: "Art Exhibition Opening" },
-    //     { title: "Community Cleanup Day" }
-    // ];
-
-    const eventTitles = [
-        "Annual Charity Gala",
-        "Tech Conference 2023",
-        "Music Festival",
-        "Sports Championship",
-        "Art Exhibition Opening",
-        "Community Cleanup Day"
-    ];
+    const [eventListData, setEventListData] = useState([]);
 
     useEffect(() => {
-        monthList().then((month) => {
-            setMonthListVal(month)
-            setLoading(false)
-        });
-        yearList().then((year) => {
-            setyearListVal(year)
-            setLoading(false);
-        });
+        if (isFocused) {
+            setLoading(true);
+            getEventListData().then((eventData) => {
+                if (eventData !== null) {
+                    setLoading(false);
+                    setEventListData(eventData);
+                } else {
+                    setLoading(false);
+                }
+            }).catch((err) => {
+                setLoading(false);
+                console.log("Event Error: ", err);
+            });
+        }
+    }, [isFocused])
 
-        getEventListData();
-    }, [selectedMonth, selectedYear])
+    const handleOpenEvent = (item) => {
+        navigation.navigate('UploadImage');
+    }
 
-    const handleOkClick = () => {
-        console.log(selectedMonth, selectedYear)
+    const handleCreateEvent = () => {
+        navigation.navigate('CreateEvent', { buttonKey: "createNewEvent" });
+    }
+
+    const handleEdit = (item) => {
+        let title = item.title;
+        let description = item.description;
+        let activitydate = item.activityDate;
+        let key = item.activityKey;
+        navigation.navigate('CreateEvent',
+            {
+                buttonKey: "createEditEvent",
+                title: title,
+                description: description,
+                activitydate: activitydate,
+                key: key,
+            });
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={()=>{navigation.goBack()}}>
+                    <Pressable onPress={() => { navigation.goBack() }}>
                         <Image style={styles.headerBackIcon} source={backImage} />
                     </Pressable>
                     <Text style={styles.headerText}>Event List</Text>
                 </View>
-                <Pressable>
+                <Pressable onPress={handleCreateEvent}>
                     <View style={styles.eventButton}>
                         <Image style={styles.headerIcon} source={addImage} />
                         <Text style={styles.eventText}>Create Event</Text>
@@ -68,52 +70,35 @@ const EventList = ({navigation}) => {
                 </Pressable>
             </View>
 
-            {/* {loading ? (<ActivityIndicatorElement />) :
-                (<View style={styles.dropdownContainer}>
-                    <Dropdown
-                        style={styles.yearDropdown}
-                        data={yearListVal}
-                        maxHeight={600}
-                        labelField="year"
-                        valueField="year"
-                        placeholder="Select Year"
-                        value={selectedYear}
-                        onChange={item => {
-                            setSelectedYear(item.year)
-                        }}
+            {loading === true ? (<ActivityIndicatorElement />) :
+                (
+                    <FlatList
+                        data={eventListData}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) =>
+                        (<Card style={styles.card}>
+                            <View style={styles.cardContent}>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: ColorCode.black,
+                                    width: 100
+                                }}>{item.activityDate}</Text>
+                                <Text style={{
+                                    fontSize: 17,
+                                    color: ColorCode.black,
+                                    width: 200,
+                                    fontWeight: '600'
+                                }}
+                                    onPress={() => { handleOpenEvent(item) }}>{item.title}</Text>
+                                {/* <Text style={{ fontSize: 16, width: 25 }}>60</Text> */}
+                                <Pressable onPress={() => { handleEdit(item) }}>
+                                    <Image style={styles.cardImage} source={pencilImage} />
+                                </Pressable>
+                            </View>
+                        </Card>
+                        )}
                     />
-                    <Dropdown
-                        style={styles.monthDropdown}
-                        data={monthListval}
-                        maxHeight={600}
-                        labelField="month"
-                        valueField="month"
-                        placeholder="Select Month"
-                        value={selectedMonth}
-                        onChange={item => {
-                            setSelectedMonth(item.month)
-                        }}
-                    />
-                    <Pressable style={styles.okButton} onPress={handleOkClick}>
-                        <Text style={styles.okText}>Ok</Text>
-                    </Pressable>
-                </View>)} */}
-
-            <FlatList
-                data={eventTitles}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <Card style={styles.card}>
-                        <View style={styles.cardContent}>
-                            <Text style={{ fontSize: 17, color: ColorCode.black, width: 100 }}>12 Jan 2023</Text>
-                            <Text style={{ fontSize: 17, color: ColorCode.black, width: 200, fontWeight: '600' }}>{item}</Text>
-                            <Text style={{ fontSize: 16, width: 25 }}>60</Text>
-                            <Image style={styles.cardImage} source={pencilImage} />
-                        </View>
-                    </Card>
                 )}
-            />
-
         </View>
     )
 }
@@ -165,29 +150,6 @@ const styles = StyleSheet.create({
     eventText: {
         color: ColorCode.white,
         fontSize: 12,
-    },
-    yearDropdown: {
-        height: 50,
-        width: 140,
-        borderBottomColor: ColorCode.transparentBlack,
-        borderWidth: 0.5,
-        padding: 10,
-        borderRadius: 8,
-    },
-    monthDropdown: {
-        height: 50,
-        width: 190,
-        borderBottomColor: ColorCode.transparentBlack,
-        borderWidth: 0.5,
-        padding: 10,
-        borderRadius: 8,
-    },
-    dropdownContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginHorizontal: 10,
-        marginVertical: 10,
     },
     okButton: {
         height: 50,

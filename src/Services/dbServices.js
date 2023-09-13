@@ -4,7 +4,6 @@ import { getDownloadURL, ref as ref_storage, uploadBytes } from "firebase/storag
 
 export const getDataFromDatabase = (path) => {
     return new Promise((resolve, reject) => {
-        console.log(database,path)
         get(ref_database(database, path)).then((snapshot) => {
             let data = snapshot.val();
             resolve(data);
