@@ -31,7 +31,14 @@ const EventList = ({ navigation }) => {
     }, [isFocused])
 
     const handleOpenEvent = (item) => {
-        navigation.navigate('UploadImage');
+        let title = item.title;
+        let activitydate = item.activityDate;
+        let key = item.activityKey;
+        navigation.navigate('UploadImage', {
+            title: title,
+            activitydate: activitydate,
+            key: key,
+        });
     }
 
     const handleCreateEvent = () => {

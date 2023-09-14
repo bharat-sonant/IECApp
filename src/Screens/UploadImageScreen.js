@@ -1,33 +1,62 @@
-import { StyleSheet, Text, View, Pressable, Image, FlatList, Dimensions } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Pressable, Image, FlatList, Dimensions, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import backImage from "../Assets/back.png";
 import { Card } from 'react-native-paper';
-import { openGallery } from '../Services/uploadImageService';
+import { getThumnailImages, openGallery } from '../Services/uploadImageService';
+import { useIsFocused } from '@react-navigation/native';
 
 const { width } = Dimensions.get('screen');
 const numColumns = 3;
 const itemWidth = width / numColumns - 20;
 
-const UploadImageScreen = ({ navigation }) => {
+const UploadImageScreen = ({ navigation, route }) => {
+    const [title, setTitle] = useState('');
+    const [indexKey, setIndexKey] = useState('');
+    const [activityDate, setActivityDate] = useState('');
+    const [loading, setLoading] = useState(true);
+    const [imageArray, setImageArray] = useState([]);
+    const isFocused = useIsFocused();
+    const [upload, setUpload] = useState('');
 
-    const images = [
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-        "https://img.freepik.com/free-photo/flowing-purple-mountain-spiral-bright-imagination-generated-by-ai_188544-9853.jpg",
-    ]
+    useEffect(() => {
+        if (isFocused) {
+            setUpload('')
+            if (route.params) {
+                const { title, activitydate, key } = route.params;
+                if (title !== undefined) {
+                    setTitle(title)
+                }
+                if (activitydate !== undefined) {
+                    setActivityDate(activitydate)
+                }
+                if (key !== undefined) {
+                    setIndexKey(key)
+                    getThumnailImages(key).then((imageUrl) => {
+                        if (imageUrl !== null) {
+                            setLoading(false);
+                            setImageArray(imageUrl)
+                        } else {
+                            setLoading(false);
+                        }
+                    }).catch((err) => {
+                        console.log("Error fetching image: ", err);
+                    })
+                }
+            }
+        }
+    }, [isFocused, upload])
 
-    const handleUploadImage = () => {
-        openGallery();
+    const handleUploadImage = async () => {
+        setLoading(true);
+        openGallery(indexKey).then((status) => {
+            if (status === "Uploadsuccessful") {
+                setLoading(false);
+                setUpload(status);
+            }
+        }).catch((err) => {
+            console.log("Error in Open Gallery", err);
+        });
     }
 
     return (
@@ -47,23 +76,39 @@ const UploadImageScreen = ({ navigation }) => {
                 </Pressable>
 
             </View>
-            <Card style={styles.card}>
-                <View style={styles.textContainer}>
-                    <Text style={styles.titleText}>Title</Text>
-                </View>
-            </Card>
+            {loading ? (<ActivityIndicatorElement />) :
+                (<>
+                    <Card style={styles.card}>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.titleText}>{title}</Text>
+                        </View>
+                    </Card>
 
-            <FlatList
-                data={images}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <Image style={[styles.imageStyle, { width: itemWidth }]} source={{ uri: item }} />
-                )}
-                numColumns={numColumns}
-            />
+                    <FlatList
+                        data={imageArray}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <Image style={[styles.imageStyle, { width: itemWidth }]} source={{ uri: item.imageUri }} />
+                        )}
+                        numColumns={numColumns}
+                    />
+                </>)}
+
         </View >
     )
 }
+
+const ActivityIndicatorElement = () => (
+    <View style={styles.activityContainer}>
+        <View style={styles.indicatorContainer}>
+            <ActivityIndicator color={ColorCode.black} size={50} />
+            <Text
+                style={styles.activityText}>
+                Please wait....
+            </Text>
+        </View>
+    </View>
+)
 
 export default UploadImageScreen
 
@@ -127,7 +172,24 @@ const styles = StyleSheet.create({
         margin: 10,
         backgroundColor: ColorCode.white,
         padding: 10,
-    }
+    },
+    activityContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    indicatorContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    activityText: {
+        fontSize: 17,
+        fontWeight: '400',
+        color: ColorCode.black,
+        marginStart: 5,
+    },
 })
 
 
