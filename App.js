@@ -8,6 +8,7 @@ import CityDetails from './src/Screens/CityDetails';
 import EventList from './src/Screens/EventList';
 import CreateEvent from './src/Screens/CreateEvent';
 import UploadImageScreen from './src/Screens/UploadImageScreen';
+import ImageScreen from './src/Screens/ImageScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,10 @@ const App = () => {
                 <Stack.Screen
                     name="UploadImage"
                     component={UploadImageScreen}
+                />
+                <Stack.Screen
+                    name="ImageView"
+                    component={ImageScreen}
                 />
             </Stack.Navigator>
         </NavigationContainer>

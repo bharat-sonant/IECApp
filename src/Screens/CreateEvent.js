@@ -99,8 +99,8 @@ const CreateEvent = ({ navigation, route }) => {
             title: title,
             createdDate: currentDate,
         }
-        let status = await saveCreatedEvent(dataObject, datevalue, indexKey);
-        if (status === "Success") {
+        let statusVal = await saveCreatedEvent(dataObject, datevalue, indexKey);
+        if (statusVal.status === "Success") {
             if (buttonValueRoute === "createNewEvent") {
                 setTitleError("");
                 setDescriptionError("")
@@ -111,9 +111,15 @@ const CreateEvent = ({ navigation, route }) => {
             } else if (buttonValueRoute === "createEditEvent") {
                 navigation.goBack();
                 setButtonVisible(false);
+                setIsSubmitVisible(false);
             } else if (buttonValueRoute === "createCaptureEvent") {
-                navigation.navigate("UploadImage");
+                navigation.navigate("UploadImage", {
+                    title: title,
+                    activitydate: datevalue,
+                    key: statusVal.lastKey,
+                });
                 setButtonVisible(false);
+                setIsSubmitVisible(false);
             }
         }
     }

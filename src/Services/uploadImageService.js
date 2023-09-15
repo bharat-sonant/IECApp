@@ -117,6 +117,28 @@ export const getThumnailImages = (indexKey) => {
     });
 }
 
+export const downloadImageUri = (indexKey, imageName) => {
+    return new Promise(async (resolve, reject) => {
+        const cityName = await AsyncStorage.getItem("cityName");
+        if (cityName) {
+            try {
+                const filePathOriginal = `${cityName}/IECActivity/EventImages/${indexKey}/Original/${imageName}`;
+                let uri = await downloadImageFromStorage(filePathOriginal);
+                if (uri !== null) {
+                    resolve(uri)
+                } else {
+                    resolve(null)
+                }
+            } catch (err) {
+                reject(err)
+            }
+
+
+        }
+
+    })
+}
+
 
 
 

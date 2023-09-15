@@ -90,6 +90,7 @@ const LoginScreen = ({ navigation }) => {
                     style={[styles.input, usernameError ? styles.inputError : null]}
                     placeholder="Username"
                     onChangeText={(text) => setUsername(text)}
+                    autoCapitalize='none'
                 />
                 {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
 

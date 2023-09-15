@@ -24,6 +24,7 @@ const UploadImageScreen = ({ navigation, route }) => {
             setUpload('')
             if (route.params) {
                 const { title, activitydate, key } = route.params;
+
                 if (title !== undefined) {
                     setTitle(title)
                 }
@@ -59,6 +60,9 @@ const UploadImageScreen = ({ navigation, route }) => {
         });
     }
 
+    const handleImageView = (item) => {
+        navigation.navigate("ImageView", { imageName: item.imageName, indexKey: indexKey });
+    }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -88,7 +92,9 @@ const UploadImageScreen = ({ navigation, route }) => {
                         data={imageArray}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
-                            <Image style={[styles.imageStyle, { width: itemWidth }]} source={{ uri: item.imageUri }} />
+                            <Pressable onPress={() => { handleImageView(item) }}>
+                                <Image style={[styles.imageStyle, { width: itemWidth }]} source={{ uri: item.imageUri }} />
+                            </Pressable>
                         )}
                         numColumns={numColumns}
                     />
