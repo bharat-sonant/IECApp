@@ -18,59 +18,77 @@ const UploadImageScreen = ({ navigation, route }) => {
     const [imageArray, setImageArray] = useState([]);
     const isFocused = useIsFocused();
     const [upload, setUpload] = useState('');
+    const [buttonValueRoute, setButtonValueRoute] = useState('');
 
     useEffect(() => {
-        if (isFocused) {
-            setUpload('')
+        if (isFocused || upload === 'Uploadsuccessful') {
+            setUpload('');
             if (route.params) {
-                const { title, activitydate, key } = route.params;
+                const { title, activitydate, key, buttonKey } = route.params;
 
                 if (title !== undefined) {
-                    setTitle(title)
+                    setTitle(title);
                 }
                 if (activitydate !== undefined) {
-                    setActivityDate(activitydate)
+                    setActivityDate(activitydate);
+                }
+                if (buttonKey !== undefined) {
+                    setButtonValueRoute(buttonKey);
                 }
                 if (key !== undefined) {
-                    setIndexKey(key)
-                    getThumnailImages(key).then((imageUrl) => {
-                        if (imageUrl !== null) {
-                            setLoading(false);
-                            setImageArray(imageUrl)
-                        } else {
-                            setLoading(false);
-                        }
-                    }).catch((err) => {
-                        console.log("Error fetching image: ", err);
-                    })
+                    setIndexKey(key);
+                    getThumnailImages(key)
+                        .then((imageUrl) => {
+                            if (imageUrl !== null) {
+                                setLoading(false);
+                                setImageArray(imageUrl);
+                            } else {
+                                setLoading(false);
+                            }
+                        })
+                        .catch((err) => {
+                            console.log('Error fetching image: ', err);
+                        });
                 }
             }
         }
-    }, [isFocused, upload])
+    }, [isFocused, upload]);
 
     const handleUploadImage = async () => {
         setLoading(true);
-        openGallery(indexKey).then((status) => {
-            if (status === "Uploadsuccessful") {
-                setLoading(false);
-                setUpload(status);
-            }
-        }).catch((err) => {
-            console.log("Error in Open Gallery", err);
-        });
-    }
+        openGallery(indexKey)
+            .then((status) => {
+                if (status === 'Uploadsuccessful') {
+                    setLoading(false);
+                    setUpload(status);
+                }
+            })
+            .catch((err) => {
+                setUpload("error");
+                console.log('Error in Open Gallery', err);
+            });
+    };
 
     const handleImageView = (item) => {
         navigation.navigate("ImageView", { imageName: item.imageName, indexKey: indexKey });
+    }
+
+    const handleGoBack = () => {
+        if (buttonValueRoute === "eventList") {
+            navigation.navigate("EventList")
+        } else if (buttonValueRoute === "createEvent") {
+            navigation.navigate("Dashboard")
+        }
+
     }
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={() => { navigation.navigate("Dashboard") }}>
+                    <Pressable onPress={handleGoBack}>
                         <Image style={styles.headerBackIcon} source={backImage} />
                     </Pressable>
-                    <Text style={styles.headerText}>Images</Text>
+                    <Text style={styles.headerText}>Event Images</Text>
                 </View>
 
                 <Pressable onPress={handleUploadImage}>
@@ -173,6 +191,8 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginHorizontal: 10,
         borderRadius: 5,
+        borderWidth: 1,
+        borderColor: ColorCode.primary,
     },
     card: {
         margin: 10,
@@ -197,7 +217,6 @@ const styles = StyleSheet.create({
         marginStart: 5,
     },
 })
-
 
 
 

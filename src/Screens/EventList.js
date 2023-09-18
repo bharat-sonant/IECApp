@@ -38,6 +38,7 @@ const EventList = ({ navigation }) => {
             title: title,
             activitydate: activitydate,
             key: key,
+            buttonKey:'eventList'
         });
     }
 
@@ -89,7 +90,7 @@ const EventList = ({ navigation }) => {
                                     fontSize: 17,
                                     color: ColorCode.black,
                                     width: 100
-                                }}>{item.activityDate}</Text>
+                                }}>{item.formatedDate}</Text>
                                 <Text style={{
                                     fontSize: 17,
                                     color: ColorCode.black,

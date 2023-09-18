@@ -7,10 +7,10 @@ const compressImage = async (imageUri) => {
     try {
         const compressedImage = await ImageResizer.createResizedImage(
             imageUri,
-            200,
-            200,
+            150,
+            150,
             "JPEG",
-            100
+            80
         );
         return compressedImage.uri;
     } catch (error) {
@@ -37,7 +37,7 @@ const saveDataToDatabase = async (originalImageUri, tempImageUri, indexKey, last
         const path = `IECActivity/EventImages/${indexKey}`;
         const lastKeyPath = `IECActivity/EventImages/${indexKey}`;
         const filePathOriginal = `${cityName}/IECActivity/EventImages/${indexKey}/Original/${imageName}`;
-        const filePathTemp = `${cityName}/IECActivity/EventImages/${indexKey}/Temp/${imageName}`;
+        const filePathTemp = `${cityName}/IECActivity/EventImages/${indexKey}/Thumb/${imageName}`;
 
         await Promise.all([
             uploadFileToStorage(originalImageUri, filePathOriginal),
@@ -104,7 +104,7 @@ export const getThumnailImages = (indexKey) => {
             if (dataValue !== null) {
                 for (let key in dataValue) {
                     if (key !== "lastKey") {
-                        const filePathTemp = `${cityName}/IECActivity/EventImages/${indexKey}/Temp/${dataValue[key]}`;
+                        const filePathTemp = `${cityName}/IECActivity/EventImages/${indexKey}/Thumb/${dataValue[key]}`;
                         let uri = await downloadImageFromStorage(filePathTemp);
                         imageUriArray.push({ "imageUri": uri, "imageName": dataValue[key] });
                     }

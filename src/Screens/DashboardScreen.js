@@ -30,6 +30,7 @@ const DashboardScreen = ({ navigation }) => {
         setSubmitDialogShow(true);
         AsyncStorage.clear();
         navigation.navigate("Splash");
+        setIsSubmitVisible(false)
     }
 
     const handleEventSchedule = () => {

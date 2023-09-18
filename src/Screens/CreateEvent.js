@@ -6,8 +6,9 @@ import moment from 'moment';
 import { ColorCode } from '../Services/colorCode';
 import backImage from "../Assets/back.png";
 import CustomSubmitAlertDialog from './CustomSubmitAlertDialog';
-import { saveCreatedEvent } from '../Services/createEventService';
+import { getValueFromDatabase, saveCreatedEvent } from '../Services/createEventService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomAlertDialog from './CustomAlertDialog';
 
 const CreateEvent = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
@@ -20,6 +21,10 @@ const CreateEvent = ({ navigation, route }) => {
     const [isSubmitVisible, setIsSubmitVisible] = useState(false);
     const [buttonValueRoute, setButtonValueRoute] = useState('');
     const [indexKey, setIndexKey] = useState('');
+    const [dialogBoxVisible, setDialogBoxVisible] = useState(false);
+    const [dialogBoxMessage, setDialogBoxMessage] = useState("");
+    const [datePickerStatus, setDatePickerStatus] = useState(false);
+    const [previousDate, setPreviousDate] = useState(false);
 
     useEffect(() => {
         if (route.params && route.params.buttonKey) {
@@ -35,6 +40,7 @@ const CreateEvent = ({ navigation, route }) => {
             }
             if (activitydate !== undefined) {
                 setDateValue(activitydate)
+                setPreviousDate(activitydate);
             }
             if (key !== undefined) {
                 setIndexKey(key)
@@ -73,8 +79,15 @@ const CreateEvent = ({ navigation, route }) => {
         }
     };
 
-    const handlePickerClick = () => {
-        setPickerOpen(!isPickerOpen);
+    const handlePickerClick = async () => {
+        let data = await getValueFromDatabase(indexKey);
+        if (data === "notNull") {
+            setDatePickerStatus(true);
+        } else if (data === "null") {
+            setDatePickerStatus(false);
+            setPickerOpen(!isPickerOpen);
+        }
+
     }
 
     const handleDateChange = (event, selectedDate) => {
@@ -99,9 +112,11 @@ const CreateEvent = ({ navigation, route }) => {
             title: title,
             createdDate: currentDate,
         }
-        let statusVal = await saveCreatedEvent(dataObject, datevalue, indexKey);
+        let statusVal = await saveCreatedEvent(dataObject, datevalue, indexKey, previousDate);
         if (statusVal.status === "Success") {
             if (buttonValueRoute === "createNewEvent") {
+                setDialogBoxMessage("Event is created");
+                setDialogBoxVisible(true);
                 setTitleError("");
                 setDescriptionError("")
                 setTitle("");
@@ -117,6 +132,7 @@ const CreateEvent = ({ navigation, route }) => {
                     title: title,
                     activitydate: datevalue,
                     key: statusVal.lastKey,
+                    buttonKey: 'createEvent'
                 });
                 setButtonVisible(false);
                 setIsSubmitVisible(false);
@@ -134,6 +150,10 @@ const CreateEvent = ({ navigation, route }) => {
         }
     }
 
+    const handleClose = () => {
+        setDialogBoxVisible(false);
+    }
+
     return (
         <>
             <View style={styles.container}>
@@ -148,7 +168,7 @@ const CreateEvent = ({ navigation, route }) => {
 
                 <View style={{ padding: 10 }}>
                     <View style={styles.datePickerView}>
-                        <TouchableOpacity style={styles.datePickerbutton} onPress={handlePickerClick}>
+                        <TouchableOpacity style={styles.datePickerbutton} disabled={datePickerStatus} onPress={handlePickerClick}>
                             <Text style={styles.datePickerbuttonText}>{moment(datevalue).format("DD MMM YYYY")}</Text>
                             <Image style={[styles.imagecalendar, { tintColor: ColorCode.primary }]} source={require('../Assets/calendar.png')} />
                             {isPickerOpen && (
@@ -195,6 +215,13 @@ const CreateEvent = ({ navigation, route }) => {
                 show={buttonVisible}
                 title="Alert!"
                 message="Are you sure you want to save?"
+            />
+
+            <CustomAlertDialog
+                visible={dialogBoxVisible}
+                title={"Alert"}
+                message={dialogBoxMessage}
+                onClose={handleClose}
             />
         </>
     );
@@ -318,6 +345,9 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'normal',
+    },
+    disabledButton: {
+        backgroundColor: ColorCode.disabled,
     },
 });
 

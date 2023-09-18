@@ -45,7 +45,7 @@ const ImageScreen = ({ navigation, route }) => {
                         () => { navigation.navigate("UploadImage") }
                     }
                 >
-                    <Text style={styles.buttonText}>Button</Text>
+                    <Text style={styles.buttonText}>Close</Text>
                 </TouchableOpacity>
             </View>
         </View>

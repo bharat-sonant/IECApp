@@ -1,3 +1,4 @@
+import moment from "moment";
 import { getDataFromDatabase } from "./dbServices";
 
 export const getEventListData = async () => {
@@ -16,13 +17,15 @@ export const getEventListData = async () => {
                         for (const idKey in data) {
                             if (idKey !== "lastKey" && data.hasOwnProperty(idKey)) {
                                 const { createdBy, description, title } = data[idKey];
+                                let formatedDate = moment(dateKey).format("DD MMM YYYY");
 
                                 eventArray.push({
                                     createdBy,
                                     description,
                                     title,
                                     activityDate: dateKey,
-                                    activityKey: idKey
+                                    activityKey: idKey,
+                                    formatedDate: formatedDate
                                 });
                             }
                         }
