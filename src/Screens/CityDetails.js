@@ -2,8 +2,7 @@ import { StyleSheet, Text, View, FlatList, Dimensions, Pressable } from 'react-n
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import { fetchCityDetails } from '../Services/cityDetailsService'
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { database, handleCitySelect } from '../Services/firebase';
+import { handleCitySelect } from '../Services/firebase';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -36,7 +35,7 @@ const CityDetails = ({ navigation }) => {
 
     const handleCitySelectButton = async (item) => {
         handleCitySelect(item).then((status) => {
-            if(status === "Success"){
+            if (status === "Success") {
                 navigation.replace("Dashboard");
             }
         })

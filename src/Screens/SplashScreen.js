@@ -14,26 +14,6 @@ const SplashScreen = ({ navigation }) => {
     const [dialogBoxMessage, setDialogBoxMessage] = useState('');
     const [loading, setLoading] = useState(true);
 
-    // useEffect(() => {
-    //     let timeoutId;
-
-    //     const checkInternetAndSetTimeout = () => {
-    //         checkInternetConnection();
-    //         timeoutId = setTimeout(checkInternetAndSetTimeout, 2000);
-    //     };
-
-    //     checkInternetAndSetTimeout();
-
-    //     const unsubscribe = navigation.addListener('focus', () => {
-    //         clearTimeout(timeoutId);
-    //         checkInternetAndSetTimeout();
-    //     });
-
-    //     return () => {
-    //         clearTimeout(timeoutId);
-    //         unsubscribe();
-    //     };
-    // }, []);
 
     useEffect(() => {
         if (isFocused) {

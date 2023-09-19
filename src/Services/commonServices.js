@@ -1,6 +1,6 @@
 import moment from "moment";
 import DeviceInfo from "react-native-device-info";
-import { downloadImageFromStorage, getDataFromDatabase } from "./dbServices";
+import { downloadImageFromStorage } from "./dbServices";
 
 export const getCurrentDateMonthYear = () => {
     const currentDate = moment(new Date()).format("YYYY-MM-DD");

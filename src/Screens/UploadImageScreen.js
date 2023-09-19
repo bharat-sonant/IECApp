@@ -117,7 +117,6 @@ const UploadImageScreen = ({ navigation, route }) => {
                         numColumns={numColumns}
                     />
                 </>)}
-
         </View >
     )
 }

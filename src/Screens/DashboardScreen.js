@@ -2,9 +2,7 @@ import React, { useRef, useState } from 'react';
 import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ColorCode } from '../Services/colorCode';
-import { UploadImageToStorage, requestCameraPermission } from '../Services/dashboardScreenService';
 import logoutImage from "../Assets/logouticon.png";
-import { database } from '../Services/firebase';
 import CustomSubmitAlertDialog from './CustomSubmitAlertDialog';
 
 const DashboardScreen = ({ navigation }) => {
