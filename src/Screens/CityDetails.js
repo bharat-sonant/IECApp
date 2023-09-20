@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler,Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import { fetchCityDetails } from '../Services/cityDetailsService'
@@ -40,11 +40,14 @@ const CityDetails = ({ navigation }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <View >
+            // <View >
                 <Pressable style={styles.cityContainer} onPress={() => { handleCitySelectButton(item) }}>
+                <Image style={{ width: 90, height: 90,marginTop:15 }} source={require('../Assets/sikar-logo_2x2.png')} />
+                <View style={styles.citys}>
                     <Text style={styles.text}>{item.cityName}</Text>
+                    </View>
                 </Pressable >
-            </View>
+            // </View>
         )
     }
 
@@ -82,28 +85,44 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        height: 60,
+        // height: 60,
         backgroundColor: ColorCode.primary,
-        padding: 15,
+        padding: 16,
     },
     headerText: {
-        fontSize: 20,
-        fontWeight: "600",
+        fontSize: 16,
+        fontWeight: "500",
         color: ColorCode.white,
     },
     cityContainer: {
         height: 150,
         width: windowWidth / 2 - 22,
-        backgroundColor: ColorCode.primary,
+        // backgroundColor: ColorCode.primary,
+        borderColor:ColorCode.primary,
+        borderWidth:2,
         marginHorizontal: 10,
         marginVertical: 10,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
+        
     },
     text: {
         color: ColorCode.white,
-        fontSize: 20,
+        fontSize: 16,
         fontWeight: '500',
+        // backgroundColor:'red'
+        textAlign:'center',
+    
+    },
+    citys:{
+       width:'100%',
+       backgroundColor:ColorCode.primary, 
+       padding:9,
+       borderBottomRightRadius:4,
+       borderBottomLeftRadius:4,
+       marginTop:6,
+   
     }
+
 })

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, BackHandler } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator, BackHandler, Image } from 'react-native';
 import { ColorCode } from '../Services/colorCode';
 import { getLoginStatus } from '../Services/loginScreenService';
 import CustomAlertDialog from './CustomAlertDialog';
@@ -85,42 +85,55 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <>
-            <View style={styles.container}>
-                <TextInput
-                    style={[styles.input, usernameError ? styles.inputError : null]}
-                    placeholder="Username"
-                    onChangeText={(text) => setUsername(text)}
-                    autoCapitalize='none'
-                />
-                {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
+           <View style={styles.container}>
+                <View style={styles.content}>
+                    <View style={styles.loginImage}>
+                        <Image style={{ width: 100, height: 110 }} source={require('../Assets/wevoislogo.png')} />
+                    </View>
 
-                <TextInput
-                    style={[styles.input, passwordError ? styles.inputError : null]}
-                    placeholder="Password"
-                    secureTextEntry={true}
-                    onChangeText={(text) => setPassword(text)}
-                />
-                {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+                    <View style={styles.inputContainer}>
+                    <TextInput
+                        style={[styles.input, usernameError ? styles.inputError : null]}
+                        placeholder="Username"
+                        onChangeText={(text) => setUsername(text)}
+                        autoCapitalize='none'
+                    />
+                    {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
 
-                {buttonVisible ? (<ActivityIndicatorElement />) :
-                    (<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                        <Text style={styles.buttonText}>Login</Text>
-                    </TouchableOpacity>)}
+                    <TextInput
+                        style={[styles.input, passwordError ? styles.inputError : null]}
+                        placeholder="Password"
+                        secureTextEntry={true}
+                        onChangeText={(text) => setPassword(text)}
+                    />
+                    </View>
+                    {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
-                <CustomAlertDialog
-                    visible={dialogBoxVisible}
-                    title={"Login"}
-                    message={dialogBoxMessage}
-                    onClose={handleClose}
-                />
+                    {buttonVisible ? (<ActivityIndicatorElement />) :
+                        (<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+                            <Text style={styles.buttonText}> 
+                            Login
+                          </Text>
+                           
+                     
+                           
+                        </TouchableOpacity>)}
 
-                <CustomSubmitAlertDialog
-                    visible={isSubmitVisible}
-                    onClose={handleCloseDialog}
-                    onConfirm={handleConfirmDialog}
-                    title="Hold on!"
-                    message="Are you sure you want to go back?"
-                />
+                    <CustomAlertDialog
+                        visible={dialogBoxVisible}
+                        title={"Login"}
+                        message={dialogBoxMessage}
+                        onClose={handleClose}
+                    />
+
+                    <CustomSubmitAlertDialog
+                        visible={isSubmitVisible}
+                        onClose={handleCloseDialog}
+                        onConfirm={handleConfirmDialog}
+                        title="Hold on!"
+                        message="Are you sure you want to go back?"
+                    />
+                </View>
 
             </View>
 
@@ -144,19 +157,29 @@ const ActivityIndicatorElement = () => (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        backgroundColor: ColorCode.white,
-        paddingHorizontal: 15
+        backgroundColor: ColorCode.white
+    },
+    content: {
+        flex: 1,
+        padding: 16,
+        marginTop: 20
     },
     input: {
-        width: '100%',
+        borderRadius: 6,
+        backgroundColor: ColorCode.white,
+        marginBottom: 30,
+        paddingLeft: 23,
+        padding: 3,
+        justifyContent: 'center',
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.9,
+        shadowRadius: 2,
+        elevation: 2,
         height: 50,
-        borderColor: ColorCode.transparentBlack,
-        borderWidth: 1,
-        borderRadius: 5,
-        marginBottom: 15,
-        paddingLeft: 10,
-        fontSize: 14,
+        fontSize: 17,
+        color: ColorCode.black,
+       
     },
     inputError: {
         borderColor: ColorCode.red,
@@ -166,18 +189,32 @@ const styles = StyleSheet.create({
         fontSize: 12,
         marginBottom: 5,
     },
+    // loginButton: {
+    //     backgroundColor: ColorCode.primary,
+    //     padding: 10,
+    //     borderRadius: 5,
+    //     width: '100%',
+    //     height: 50,
+    // },
     loginButton: {
-        backgroundColor: ColorCode.primary,
-        padding: 10,
-        borderRadius: 5,
+        display:"flex",
         width: '100%',
+        backgroundColor: ColorCode.primary,
+        borderRadius: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
         height: 50,
+    
+
     },
     buttonText: {
+     marginTop:5,
         color: ColorCode.white,
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+        marginBottom:10,
+    
     },
     activityContainer: {
         justifyContent: 'center',
@@ -195,8 +232,16 @@ const styles = StyleSheet.create({
         color: ColorCode.black,
         marginStart: 5,
     },
-});
+    loginImage: {
+        width: '100%',
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 40
 
+    },
+   
+});
 export default LoginScreen;
 
 

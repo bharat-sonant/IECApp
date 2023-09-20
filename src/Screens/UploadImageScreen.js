@@ -5,6 +5,7 @@ import backImage from "../Assets/back.png";
 import { Card } from 'react-native-paper';
 import { getThumnailImages, openGallery } from '../Services/uploadImageService';
 import { useIsFocused } from '@react-navigation/native';
+import uploadImage from "../Assets/upload-icon.png";
 
 const { width } = Dimensions.get('screen');
 const numColumns = 3;
@@ -93,7 +94,8 @@ const UploadImageScreen = ({ navigation, route }) => {
 
                 <Pressable onPress={handleUploadImage}>
                     <View style={styles.eventButton}>
-                        <Text style={styles.eventText}>Upload Image</Text>
+                    <Image style={styles.headerIcon} source={uploadImage} />
+                        <Text style={styles.eventText}>Upload </Text>
                     </View>
                 </Pressable>
 
@@ -144,36 +146,35 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: 'center',
-        height: 60,
+        // height: 60,
         backgroundColor: ColorCode.primary,
-        padding: 15,
+        padding: 13,
     },
     headerText: {
-        fontSize: 20,
-        fontWeight: "600",
+        fontSize: 16,
+        fontWeight: "500",
         color: ColorCode.white,
     },
     headerIcon: {
-        height: 28,
-        width: 28,
+        height: 2,
+        width: 2,
     },
     headerBackIcon: {
-        height: 27,
-        width: 27,
-        marginRight: 15,
+        height: 22,
+        width: 22,
+        marginRight: 10,
     },
     eventButton: {
-        height: 40,
-        width: 120,
-        justifyContent: 'center',
         alignItems: 'center',
+        flexDirection: 'row',
         backgroundColor: ColorCode.white,
-        borderRadius: 5,
         padding: 5,
+        borderRadius: 5
     },
     eventText: {
         color: ColorCode.primary,
         fontSize: 14,
+        marginLeft:5
     },
     textContainer: {
         justifyContent: 'center',
@@ -214,6 +215,11 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         color: ColorCode.black,
         marginStart: 5,
+    },
+    headerIcon: {
+        height: 22,
+        width: 22,
+        tintColor: ColorCode.primary
     },
 })
 

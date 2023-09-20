@@ -38,7 +38,7 @@ const EventList = ({ navigation }) => {
             title: title,
             activitydate: activitydate,
             key: key,
-            buttonKey:'eventList'
+            buttonKey: 'eventList'
         });
     }
 
@@ -72,14 +72,17 @@ const EventList = ({ navigation }) => {
                 </View>
                 <Pressable onPress={handleCreateEvent}>
                     <View style={styles.eventButton}>
-                        <Image style={styles.headerIcon} source={addImage} />
-                        <Text style={styles.eventText}>Create Event</Text>
+                        <View >
+                            <Image style={styles.headerIcon} source={addImage} />
+                        </View>
+                        <Text style={styles.eventText}>Event</Text>
                     </View>
                 </Pressable>
             </View>
-
+            {renderItem()}
             {loading === true ? (<ActivityIndicatorElement />) :
                 (
+
                     <FlatList
                         data={eventListData}
                         keyExtractor={(item, index) => index.toString()}
@@ -87,15 +90,15 @@ const EventList = ({ navigation }) => {
                         (<Card style={styles.card}>
                             <View style={styles.cardContent}>
                                 <Text style={{
-                                    fontSize: 17,
+                                    fontSize: 16,
                                     color: ColorCode.black,
-                                    width: 100
+                                    width: '35%'
                                 }}>{item.formatedDate}</Text>
                                 <Text style={{
-                                    fontSize: 17,
+                                    fontSize: 16,
                                     color: ColorCode.black,
-                                    width: 200,
-                                    fontWeight: '600'
+                                    width: '55%',
+                                    fontWeight: '500'
                                 }}
                                     onPress={() => { handleOpenEvent(item) }}>{item.title}</Text>
                                 {/* <Text style={{ fontSize: 16, width: 25 }}>60</Text> */}
@@ -123,6 +126,31 @@ const ActivityIndicatorElement = () => (
     </View>
 )
 
+const renderItem = () => (
+    <View style={styles.card2}>
+        <View style={styles.cardHeader}>
+            <Text style={{
+                fontSize: 16,
+                color: ColorCode.black,
+                width: '35%',fontWeight: '500'
+            }}>Date</Text>
+               <Text style={{
+                fontSize: 16,
+                color: ColorCode.black,
+                width: '55%',fontWeight: '500'
+            }}>Task</Text>
+<Text style={{
+                fontSize: 16,
+                color: ColorCode.black,fontWeight: '500'
+              
+            }}>Action</Text>
+
+            {/* <Text style={{ fontSize: 16, width: 25 }}>60</Text> */}
+
+        </View>
+     </View >
+)
+
 export default EventList
 
 const styles = StyleSheet.create({
@@ -134,30 +162,36 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: 'center',
-        height: 60,
+        // height: 60,
         backgroundColor: ColorCode.primary,
-        padding: 15,
+        padding: 13,
     },
     headerText: {
-        fontSize: 20,
-        fontWeight: "600",
+        fontSize: 16,
+        fontWeight: "500",
         color: ColorCode.white,
     },
     headerIcon: {
-        height: 28,
-        width: 28,
+        height: 22,
+        width: 22,
+        tintColor: ColorCode.primary
     },
     headerBackIcon: {
-        height: 27,
-        width: 27,
-        marginRight: 15,
+        height: 22,
+        width: 22,
+        marginRight: 10,
     },
     eventButton: {
         alignItems: 'center',
+        flexDirection: 'row',
+        backgroundColor: ColorCode.white,
+        padding: 5,
+        borderRadius: 5
     },
     eventText: {
-        color: ColorCode.white,
-        fontSize: 12,
+        color: ColorCode.primary,
+        fontSize: 13,
+        marginLeft: 2
     },
     okButton: {
         height: 50,
@@ -191,6 +225,7 @@ const styles = StyleSheet.create({
     card: {
         margin: 10,
         backgroundColor: ColorCode.white,
+        padding: 10
     },
     cardImage: {
         height: 20,
@@ -198,11 +233,25 @@ const styles = StyleSheet.create({
         padding: 8,
     },
     cardContent: {
+        width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 10,
         alignItems: 'center'
-    }
+    },
+    cardHeader:{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 10,
+        alignItems: 'center',
+        
+    },
+    card2: {
+        margin: 10,
+        backgroundColor: ColorCode.lightGrey,
+        padding: 10
+    },
 
 })
 

@@ -61,10 +61,13 @@ const DashboardScreen = ({ navigation }) => {
                     </Pressable>
                 </View>
                 <Pressable style={styles.Button} onPress={handleCaptureEvent}>
+                    
+                <Image style={{ width: 24, height: 26,marginRight:6 }} source={require('../Assets/capture-icon.png')} />
                     <Text style={styles.ButtonText}>Capture Event</Text>
                 </Pressable>
 
                 <Pressable style={styles.Button} onPress={handleEventSchedule}>
+                <Image style={{ width: 26, height: 29,marginRight:6 }} source={require('../Assets/event-icon.png')} />
                     <Text style={styles.ButtonText}>Event Schedule</Text>
                 </Pressable>
 
@@ -93,13 +96,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: 'center',
-        height: 60,
+        // height: 60,
         backgroundColor: ColorCode.primary,
-        padding: 15,
+        padding: 13,
     },
     headerText: {
-        fontSize: 20,
-        fontWeight: "600",
+        fontSize: 16,
+        fontWeight: "500",
         color: ColorCode.white,
     },
     headerIcon: {
@@ -116,10 +119,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
         marginVertical: 10,
+        flexDirection:'row'
     },
     ButtonText: {
         color: ColorCode.white,
-        fontSize: 18,
+        fontSize: 16,
         fontWeight: '500',
+        // marginBottom:10,
+        
     },
 });
