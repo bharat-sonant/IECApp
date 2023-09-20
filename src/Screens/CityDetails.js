@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Dimensions, Pressable } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import { fetchCityDetails } from '../Services/cityDetailsService'
@@ -20,6 +20,21 @@ const CityDetails = ({ navigation }) => {
         }).catch((err) => {
             console.log("Error in City List: ", err);
         });
+    }, [])
+
+    useEffect(() => {
+        const backAction = () => {
+            navigation.navigate("Login");
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+
     }, [])
 
 

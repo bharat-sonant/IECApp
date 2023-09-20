@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
 
     useEffect(() => {
         const backAction = () => {
-            setIsSubmitVisible(true);
+            BackHandler.exitApp();
             return true;
         };
 

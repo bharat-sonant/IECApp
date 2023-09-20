@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image, Pressable, BackHandler } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ColorCode } from '../Services/colorCode';
 import logoutImage from "../Assets/logouticon.png";
@@ -9,6 +9,21 @@ const DashboardScreen = ({ navigation }) => {
 
     const [isSubmitVisible, setIsSubmitVisible] = useState(false);
     const [submitDialogShow, setSubmitDialogShow] = useState(false);
+
+    useEffect(() => {
+        const backAction = () => {
+            BackHandler.exitApp();
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+
+    }, [])
 
     const handleLogoutButtonPress = () => {
         setIsSubmitVisible(true);
