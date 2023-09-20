@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler,Image } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler, Image } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import { fetchCityDetails } from '../Services/cityDetailsService'
@@ -41,12 +41,12 @@ const CityDetails = ({ navigation }) => {
     const renderItem = ({ item }) => {
         return (
             // <View >
-                <Pressable style={styles.cityContainer} onPress={() => { handleCitySelectButton(item) }}>
-                <Image style={{ width: 90, height: 90,marginTop:15 }} source={require('../Assets/sikar-logo_2x2.png')} />
+            <Pressable style={styles.cityContainer} onPress={() => { handleCitySelectButton(item) }}>
+                <Image style={{ width: 90, height: 90, marginTop: 15 }} source={{ uri: item.images }} />
                 <View style={styles.citys}>
                     <Text style={styles.text}>{item.cityName}</Text>
-                    </View>
-                </Pressable >
+                </View>
+            </Pressable >
             // </View>
         )
     }
@@ -63,7 +63,7 @@ const CityDetails = ({ navigation }) => {
         <>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={styles.headerText}>City List</Text>
+                    <Text style={styles.headerText}>Select City</Text>
                 </View>
 
                 <FlatList
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
         padding: 16,
     },
     headerText: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "500",
         color: ColorCode.white,
     },
@@ -98,31 +98,31 @@ const styles = StyleSheet.create({
         height: 150,
         width: windowWidth / 2 - 22,
         // backgroundColor: ColorCode.primary,
-        borderColor:ColorCode.primary,
-        borderWidth:2,
+        borderColor: ColorCode.primary,
+        borderWidth: 2,
         marginHorizontal: 10,
         marginVertical: 10,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
-        
+
     },
     text: {
         color: ColorCode.white,
         fontSize: 16,
         fontWeight: '500',
         // backgroundColor:'red'
-        textAlign:'center',
-    
+        textAlign: 'center',
+
     },
-    citys:{
-       width:'100%',
-       backgroundColor:ColorCode.primary, 
-       padding:9,
-       borderBottomRightRadius:4,
-       borderBottomLeftRadius:4,
-       marginTop:6,
-   
+    citys: {
+        width: '100%',
+        backgroundColor: ColorCode.primary,
+        padding: 9,
+        borderBottomRightRadius: 4,
+        borderBottomLeftRadius: 4,
+        marginTop: 6,
+
     }
 
 })

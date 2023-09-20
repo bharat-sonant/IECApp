@@ -72,10 +72,8 @@ const EventList = ({ navigation }) => {
                 </View>
                 <Pressable onPress={handleCreateEvent}>
                     <View style={styles.eventButton}>
-                        <View >
-                            <Image style={styles.headerIcon} source={addImage} />
-                        </View>
-                        <Text style={styles.eventText}>Event</Text>
+                        <Image style={styles.headerIcon} source={addImage} />
+                        <Text style={styles.eventText}>Event </Text>
                     </View>
                 </Pressable>
             </View>
@@ -100,8 +98,12 @@ const EventList = ({ navigation }) => {
                                     width: '55%',
                                     fontWeight: '500'
                                 }}
-                                    onPress={() => { handleOpenEvent(item) }}>{item.title}</Text>
-                                {/* <Text style={{ fontSize: 16, width: 25 }}>60</Text> */}
+                                    onPress={() => { handleOpenEvent(item) }}>
+                                    {item.title.length > 15 ?
+                                        `${item.title.substring(0, 20)}...` :
+                                        item.title
+                                    }
+                                </Text>
                                 <Pressable onPress={() => { handleEdit(item) }}>
                                     <Image style={styles.cardImage} source={pencilImage} />
                                 </Pressable>
@@ -127,28 +129,27 @@ const ActivityIndicatorElement = () => (
 )
 
 const renderItem = () => (
-    <View style={styles.card2}>
-        <View style={styles.cardHeader}>
-            <Text style={{
-                fontSize: 16,
-                color: ColorCode.black,
-                width: '35%',fontWeight: '500'
-            }}>Date</Text>
-               <Text style={{
-                fontSize: 16,
-                color: ColorCode.black,
-                width: '55%',fontWeight: '500'
-            }}>Task</Text>
-<Text style={{
-                fontSize: 16,
-                color: ColorCode.black,fontWeight: '500'
-              
-            }}>Action</Text>
+    <View style={{ backgroundColor: ColorCode.lightGrey, padding: 10, }}>
+        <View style={styles.cardHeaderContainer}>
+            <View style={styles.cardHeader}>
+                <Text style={{
+                    fontSize: 16,
+                    color: ColorCode.black,
+                    width: '35%', fontWeight: '500'
+                }}>Date</Text>
+                <Text style={{
+                    fontSize: 16,
+                    color: ColorCode.black,
+                    width: '55%', fontWeight: '500'
+                }}>Task</Text>
+                <Text style={{
+                    fontSize: 16,
+                    color: ColorCode.black, fontWeight: '500'
 
-            {/* <Text style={{ fontSize: 16, width: 25 }}>60</Text> */}
-
-        </View>
-     </View >
+                }}>Action</Text>
+            </View>
+        </View >
+    </View>
 )
 
 export default EventList
@@ -162,19 +163,18 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: 'center',
-        // height: 60,
         backgroundColor: ColorCode.primary,
         padding: 13,
     },
     headerText: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "500",
         color: ColorCode.white,
     },
     headerIcon: {
-        height: 22,
-        width: 22,
-        tintColor: ColorCode.primary
+        height: 20,
+        width: 20,
+        tintColor: ColorCode.primary,
     },
     headerBackIcon: {
         height: 22,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: ColorCode.white,
-        padding: 5,
+        padding: 8,
         borderRadius: 5
     },
     eventText: {
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     cardImage: {
         height: 20,
         width: 20,
-        padding: 8,
+        padding: 10,
     },
     cardContent: {
         width: '100%',
@@ -239,18 +239,17 @@ const styles = StyleSheet.create({
         padding: 10,
         alignItems: 'center'
     },
-    cardHeader:{
+    cardHeader: {
         width: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 10,
+        paddingStart: 10,
+        paddingEnd: 10,
         alignItems: 'center',
-        
     },
-    card2: {
-        margin: 10,
+    cardHeaderContainer: {
         backgroundColor: ColorCode.lightGrey,
-        padding: 10
+        margin: 10,
     },
 
 })

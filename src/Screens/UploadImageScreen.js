@@ -94,8 +94,8 @@ const UploadImageScreen = ({ navigation, route }) => {
 
                 <Pressable onPress={handleUploadImage}>
                     <View style={styles.eventButton}>
-                    <Image style={styles.headerIcon} source={uploadImage} />
-                        <Text style={styles.eventText}>Upload </Text>
+                        <Image style={styles.headerIcon} source={uploadImage} />
+                        <Text style={styles.eventText}>Images</Text>
                     </View>
                 </Pressable>
 
@@ -103,6 +103,15 @@ const UploadImageScreen = ({ navigation, route }) => {
             {loading ? (<ActivityIndicatorElement />) :
                 (<>
                     <Card style={styles.card}>
+                        <Text style={{
+                            fontSize: 15,
+                            color: ColorCode.transparentBlack,
+                            marginTop: -20,
+                            backgroundColor: ColorCode.white,
+                            width: "9%",
+                            marginStart: 5,
+                            fontWeight: '500',
+                        }}>Title</Text>
                         <View style={styles.textContainer}>
                             <Text style={styles.titleText}>{title}</Text>
                         </View>
@@ -151,7 +160,7 @@ const styles = StyleSheet.create({
         padding: 13,
     },
     headerText: {
-        fontSize: 16,
+        fontSize: 18,
         fontWeight: "500",
         color: ColorCode.white,
     },
@@ -168,13 +177,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         backgroundColor: ColorCode.white,
-        padding: 5,
+        padding: 8,
         borderRadius: 5
     },
     eventText: {
         color: ColorCode.primary,
         fontSize: 14,
-        marginLeft:5
+        marginLeft: 5
     },
     textContainer: {
         justifyContent: 'center',

@@ -77,8 +77,8 @@ const styles = StyleSheet.create({
         padding: 15,
     },
     headerText: {
-        fontSize: 20,
-        fontWeight: "600",
+        fontSize: 18,
+        fontWeight: "500",
         color: ColorCode.white,
     },
     headerIcon: {
@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
         width: 28,
     },
     headerBackIcon: {
-        height: 27,
-        width: 27,
-        marginRight: 15,
+        height: 22,
+        width: 22,
+        marginRight: 10,
     },
     image: {
         flex: 1,
