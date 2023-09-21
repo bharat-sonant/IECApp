@@ -62,13 +62,13 @@ const DashboardScreen = ({ navigation }) => {
                 </View>
                 <Pressable style={styles.Button} onPress={handleCaptureEvent}>
                     
-                <Image style={{ width: 24, height: 26,marginRight:6 }} source={require('../Assets/capture-icon.png')} />
-                    <Text style={styles.ButtonText}>Capture Event</Text>
+                <Image style={{ width: 180, height: 55,marginRight:6 }} source={require('../Assets/capture-icon.png')} />
+                    {/* <Text style={styles.ButtonText}>Capture Event</Text> */}
                 </Pressable>
 
                 <Pressable style={styles.Button} onPress={handleEventSchedule}>
-                <Image style={{ width: 26, height: 29,marginRight:6 }} source={require('../Assets/event-icon.png')} />
-                    <Text style={styles.ButtonText}>Event Schedule</Text>
+                <Image style={{ width: 180, height: 55,marginRight:6 }} source={require('../Assets/event-icon.png')} />
+                    {/* <Text style={styles.ButtonText}>Event Schedule</Text> */}
                 </Pressable>
 
                 <CustomSubmitAlertDialog
@@ -110,8 +110,9 @@ const styles = StyleSheet.create({
         width: 28,
     },
     Button: {
-        height: 50,
-        backgroundColor: ColorCode.primary,
+        height: 130,
+     
+        backgroundColor: ColorCode.white,
         borderColor: ColorCode.primary,
         borderRadius: 8,
         borderWidth: 1,
@@ -119,13 +120,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 10,
         marginVertical: 10,
-        flexDirection:'row'
+        // flexDirection:'row'
     },
     ButtonText: {
-        color: ColorCode.white,
+        color: ColorCode.black,
         fontSize: 16,
         fontWeight: '500',
-        // marginBottom:10,
+        marginTop:10,
         
     },
 });

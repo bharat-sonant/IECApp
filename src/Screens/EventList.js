@@ -132,21 +132,27 @@ const renderItem = () => (
     <View style={{ backgroundColor: ColorCode.lightGrey, padding: 10, }}>
         <View style={styles.cardHeaderContainer}>
             <View style={styles.cardHeader}>
+                <View style={{width:'33.33%',height:'100%', borderRightWidth:1,alignItems:'flex-start'}}>
                 <Text style={{
                     fontSize: 16,
                     color: ColorCode.black,
-                    width: '35%', fontWeight: '500'
+                    width: '35%', fontWeight: '500',
                 }}>Date</Text>
+                </View>
+                <View style={{width:'33.33%',height:'100%', borderRightWidth:1 ,alignItems:'center'}}>
                 <Text style={{
                     fontSize: 16,
                     color: ColorCode.black,
                     width: '55%', fontWeight: '500'
                 }}>Task</Text>
+                </View>
+                <View style={{width:'33.33%' ,height:'100%', alignItems:'flex-end'}}>
                 <Text style={{
                     fontSize: 16,
                     color: ColorCode.black, fontWeight: '500'
 
                 }}>Action</Text>
+                 </View>
             </View>
         </View >
     </View>
@@ -246,10 +252,12 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         alignItems: 'center',
+
     },
     cardHeaderContainer: {
         backgroundColor: ColorCode.lightGrey,
-        margin: 10,
+        // margin: 10,
+        padding:10
     },
 
 })
