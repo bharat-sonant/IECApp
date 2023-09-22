@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image, ActivityIndicator, BackHandler } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, BackHandler } from 'react-native';
 import backImage from "../Assets/back.png";
 import { ColorCode } from '../Services/colorCode';
 
 const ImageScreen = ({ navigation, route }) => {
-    const [imageUrl, setImageurl] = useState(null);
+    const [imageUrl, setImageUrl] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (route.params) {
             const { originalUri } = route.params;
             if (originalUri !== undefined) {
-                setImageurl(originalUri);
+                setImageUrl(originalUri);
             }
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
         const backAction = () => {
@@ -28,52 +28,47 @@ const ImageScreen = ({ navigation, route }) => {
         );
 
         return () => backHandler.remove();
+    }, []);
 
-    }, [])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={() => navigation.navigate("UploadImage")}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate("UploadImage")}>
                         <Image style={styles.headerBackIcon} source={backImage} />
-                    </Pressable>
+                    </TouchableOpacity>
                     <Text style={styles.headerText}>Images View</Text>
                 </View>
             </View>
 
             {imageUrl !== null && (
-                <Image style={styles.image}
+                <Image
+                    style={styles.image}
                     source={{ uri: imageUrl }}
                     onLoadStart={() => setLoading(true)}
-                    onLoadEnd={() => setLoading(false)} />
+                    onLoadEnd={() => setLoading(false)}
+                />
             )}
-            {loading && <ActivityIndicatorElement />}
 
-            <View style={styles.buttonContainer}>
+            {loading && (
+                <View style={styles.loaderContainer}>
+                    <ActivityIndicator color={ColorCode.white} size={50} />
+                    <Text style={styles.activityText}>Please wait....</Text>
+                </View>
+            )}
+
+            {loading === false && (<View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={
-                        () => navigation.navigate("UploadImage")
-                    }
+                    onPress={() => navigation.navigate("UploadImage")}
                 >
                     <Text style={styles.buttonText}>Close</Text>
                 </TouchableOpacity>
-            </View>
+            </View>)}
+
         </View>
     );
 };
-
-const ActivityIndicatorElement = () => (
-    <View style={styles.activityContainer}>
-        <View style={styles.indicatorContainer}>
-            <ActivityIndicator color={ColorCode.black} size={50} />
-            <Text
-                style={styles.activityText}>
-                Please wait....
-            </Text>
-        </View>
-    </View>
-)
 
 const styles = StyleSheet.create({
     container: {
@@ -91,20 +86,29 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "500",
         color: ColorCode.white,
-    },
-    headerIcon: {
-        height: 28,
-        width: 28,
+        marginLeft: 10,
     },
     headerBackIcon: {
         height: 22,
         width: 22,
-        marginRight: 10,
     },
     image: {
         flex: 1,
         resizeMode: 'cover',
         justifyContent: 'center',
+    },
+    loaderContainer: {
+        ...StyleSheet.absoluteFillObject,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    activityText: {
+        fontSize: 17,
+        fontWeight: '400',
+        color: ColorCode.white,
+        marginStart: 5,
+        marginTop: 10,
     },
     buttonContainer: {
         position: 'absolute',
@@ -127,22 +131,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 17,
     },
-    activityContainer: {
-        flex: 1,
-        height: '100%',
-        width: '100%',
-    },
-    indicatorContainer: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    activityText: {
-        fontSize: 17,
-        fontWeight: '400',
-        color: ColorCode.black,
-        marginStart: 5,
-    },
 });
 
 export default ImageScreen;
+

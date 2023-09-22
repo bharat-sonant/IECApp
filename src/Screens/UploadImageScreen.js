@@ -22,7 +22,7 @@ const UploadImageScreen = ({ navigation, route }) => {
     const [buttonValueRoute, setButtonValueRoute] = useState('');
 
     useEffect(() => {
-        if (isFocused || upload === 'Uploadsuccessful') {
+        if (isFocused) {
             setUpload('');
             if (route.params) {
                 const { title, activitydate, key, buttonKey } = route.params;
@@ -51,7 +51,21 @@ const UploadImageScreen = ({ navigation, route }) => {
                             console.log('Error fetching image: ', err);
                         });
                 }
+            } else {
+                getThumnailImages(indexKey)
+                    .then((imageUrl) => {
+                        if (imageUrl !== null) {
+                            setLoading(false);
+                            setImageArray(imageUrl);
+                        } else {
+                            setLoading(false);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('Error fetching image: ', err);
+                    });
             }
+
             const backAction = () => {
                 if (route.params.buttonKey === "createEvent") {
                     navigation.navigate("Dashboard")
