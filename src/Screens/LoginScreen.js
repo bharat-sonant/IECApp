@@ -154,12 +154,12 @@ const ActivityIndicatorElement = () => (
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: ColorCode.white
+        backgroundColor: ColorCode.white,
     },
     content: {
         flex: 1,
         padding: 16,
-        marginTop: 20
+        marginTop: 15
     },
     input: {
         borderRadius: 6,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         color: 'red',
         fontSize: 12,
         marginBottom: 10,
-        marginTop:-20
+        marginTop: -20
     },
     loginButton: {
         display: "flex",
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
         height: 200,
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: 40
+        marginBottom: 20
     },
 
 });

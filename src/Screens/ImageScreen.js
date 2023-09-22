@@ -45,6 +45,7 @@ const ImageScreen = ({ navigation, route }) => {
                 <Image
                     style={styles.image}
                     source={{ uri: imageUrl }}
+                    resizeMode='contain'
                     onLoadStart={() => setLoading(true)}
                     onLoadEnd={() => setLoading(false)}
                 />
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         borderRadius: 10,
         height: 50,
-        width: '90%',
+        width: '50%',
         justifyContent: 'center',
         alignItems: 'center',
     },

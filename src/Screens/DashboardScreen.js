@@ -61,14 +61,12 @@ const DashboardScreen = ({ navigation }) => {
                     </Pressable>
                 </View>
                 <Pressable style={styles.Button} onPress={handleCaptureEvent}>
-                    
-                <Image style={{ width: 180, height: 55,marginRight:6 }} source={require('../Assets/capture-icon.png')} />
-                    {/* <Text style={styles.ButtonText}>Capture Event</Text> */}
+
+                    <Image style={{ width: 180, height: 55, marginRight: 6 }} source={require('../Assets/capture-icon.png')} />
                 </Pressable>
 
                 <Pressable style={styles.Button} onPress={handleEventSchedule}>
-                <Image style={{ width: 180, height: 55,marginRight:6 }} source={require('../Assets/event-icon.png')} />
-                    {/* <Text style={styles.ButtonText}>Event Schedule</Text> */}
+                    <Image style={{ width: 180, height: 55, marginRight: 6 }} source={require('../Assets/event-icon.png')} />
                 </Pressable>
 
                 <CustomSubmitAlertDialog
@@ -91,12 +89,12 @@ export default DashboardScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: ColorCode.white,
     },
     header: {
         flexDirection: 'row',
         justifyContent: "space-between",
         alignItems: 'center',
-        // height: 60,
         backgroundColor: ColorCode.primary,
         padding: 13,
     },
@@ -111,7 +109,6 @@ const styles = StyleSheet.create({
     },
     Button: {
         height: 130,
-     
         backgroundColor: ColorCode.white,
         borderColor: ColorCode.primary,
         borderRadius: 8,
@@ -119,14 +116,13 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: 'center',
         marginHorizontal: 10,
-        marginVertical: 10,
-        // flexDirection:'row'
+        marginVertical: 20,
     },
     ButtonText: {
         color: ColorCode.black,
         fontSize: 16,
         fontWeight: '500',
-        marginTop:10,
-        
+        marginTop: 10,
+
     },
 });

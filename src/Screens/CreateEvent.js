@@ -127,7 +127,7 @@ const CreateEvent = ({ navigation, route }) => {
         let statusVal = await saveCreatedEvent(dataObject, datevalue, indexKey, previousDate);
         if (statusVal.status === "Success") {
             if (buttonValueRoute === "createNewEvent") {
-                setDialogBoxMessage("Event is created Successfully");
+                setDialogBoxMessage("Event is created successfully");
                 setDialogBoxVisible(true);
                 setTitleError("");
                 setDescriptionError("")
@@ -137,7 +137,7 @@ const CreateEvent = ({ navigation, route }) => {
                 setIsSubmitVisible(false);
                 setButtonVisible(false);
             } else if (buttonValueRoute === "createEditEvent") {
-                setDialogBoxMessage("Event is updated Successfully");
+                setDialogBoxMessage("Event is updated successfully");
                 setDialogBoxVisible(true);
                 setButtonVisible(false);
                 setIsSubmitVisible(false);
