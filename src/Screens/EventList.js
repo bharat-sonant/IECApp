@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image, ActivityIndicator, FlatList } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image, ActivityIndicator, FlatList, BackHandler } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import addImage from "../Assets/add.png";
@@ -27,8 +27,25 @@ const EventList = ({ navigation }) => {
                 setLoading(false);
                 console.log("Event Error: ", err);
             });
+
+            const backAction = () => {
+                navigation.goBack();
+                return true;
+            };
+
+            const backHandler = BackHandler.addEventListener(
+                'hardwareBackPress',
+                backAction,
+            );
+
+            return () => backHandler.remove();
         }
     }, [isFocused])
+
+    useEffect(() => {
+
+
+    }, [])
 
     const handleOpenEvent = (item) => {
         let title = item.title;
@@ -90,13 +107,17 @@ const EventList = ({ navigation }) => {
                                 <Text style={{
                                     fontSize: 16,
                                     color: ColorCode.black,
-                                    width: '35%'
-                                }}>{item.formatedDate}</Text>
+                                    width: '35%',
+                                    height: 40,
+                                    textAlignVertical: 'center'
+                                }}>{item.formattedDate}</Text>
                                 <Text style={{
                                     fontSize: 16,
                                     color: ColorCode.black,
                                     width: '55%',
-                                    fontWeight: '500'
+                                    fontWeight: '500',
+                                    height: 40,
+                                    textAlignVertical: 'center'
                                 }}
                                     onPress={() => { handleOpenEvent(item) }}>
                                     {item.title.length > 15 ?
@@ -129,30 +150,43 @@ const ActivityIndicatorElement = () => (
 )
 
 const renderItem = () => (
-    <View style={{ backgroundColor: ColorCode.lightGrey, padding: 10, }}>
+    <View style={{
+        backgroundColor: ColorCode.lightGrey,
+        borderWidth: 1,
+        borderBottomColor: ColorCode.black,
+    }}>
         <View style={styles.cardHeaderContainer}>
             <View style={styles.cardHeader}>
-                <View style={{width:'33.33%',height:'100%', borderRightWidth:1,alignItems:'flex-start'}}>
                 <Text style={{
                     fontSize: 16,
                     color: ColorCode.black,
-                    width: '35%', fontWeight: '500',
+                    width: '35%',
+                    flex: 0.40,
+                    fontWeight: '500',
+                    borderRightWidth: 1,
+                    borderRightColor: ColorCode.black,
+                    height: 50,
+                    textAlignVertical: 'center',
+                    marginStart: 1,
                 }}>Date</Text>
-                </View>
-                <View style={{width:'33.33%',height:'100%', borderRightWidth:1 ,alignItems:'center'}}>
                 <Text style={{
                     fontSize: 16,
                     color: ColorCode.black,
-                    width: '55%', fontWeight: '500'
+                    width: '55%',
+                    flex: 0.55,
+                    fontWeight: '500',
+                    borderRightWidth: 1,
+                    borderRightColor: ColorCode.black,
+                    height: 50,
+                    textAlignVertical: 'center',
                 }}>Task</Text>
-                </View>
-                <View style={{width:'33.33%' ,height:'100%', alignItems:'flex-end'}}>
                 <Text style={{
                     fontSize: 16,
-                    color: ColorCode.black, fontWeight: '500'
-
+                    color: ColorCode.black,
+                    fontWeight: '500',
+                    height: 50,
+                    textAlignVertical: 'center',
                 }}>Action</Text>
-                 </View>
             </View>
         </View >
     </View>
@@ -176,6 +210,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "500",
         color: ColorCode.white,
+
     },
     headerIcon: {
         height: 20,
@@ -229,14 +264,13 @@ const styles = StyleSheet.create({
         marginStart: 5,
     },
     card: {
-        margin: 10,
+        marginVertical: 10,
         backgroundColor: ColorCode.white,
-        padding: 10
     },
     cardImage: {
         height: 20,
         width: 20,
-        padding: 10,
+        // padding: 10,
     },
     cardContent: {
         width: '100%',
@@ -252,12 +286,9 @@ const styles = StyleSheet.create({
         paddingStart: 10,
         paddingEnd: 10,
         alignItems: 'center',
-
     },
     cardHeaderContainer: {
         backgroundColor: ColorCode.lightGrey,
-        // margin: 10,
-        padding:10
     },
 
 })

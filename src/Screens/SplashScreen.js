@@ -15,9 +15,8 @@ const SplashScreen = ({ navigation }) => {
 
     useEffect(() => {
         if (isFocused) {
-            setTimeout(() => {
-                checkInternetConnection();
-            }, 2000)
+
+            checkInternetConnection();
         }
     }, [isFocused])
 
@@ -26,9 +25,9 @@ const SplashScreen = ({ navigation }) => {
         if (state.isConnected === true) {
             const versionStatus = await CheckVersion();
             if (versionStatus === "Success") {
-                getLoginStatusFromAsyn();
                 getCityDetail();
                 getLoginUserDetails();
+                getLoginStatusFromAsyn();
             } else if (versionStatus === "Failed") {
                 setDialogBoxVisible(true);
                 setDialogBoxMessage("Your App version is not Matched !. Please update your app.");
@@ -46,10 +45,10 @@ const SplashScreen = ({ navigation }) => {
         let loginStatus = await AsyncStorage.getItem("LoginStatus");
         if (loginStatus !== null) {
             if (loginStatus === "True") {
-                navigation.replace("Dashboard")
+                navigation.navigate("Dashboard")
             }
         } else {
-            navigation.replace("Login")
+            navigation.navigate("Login")
         }
     }
 

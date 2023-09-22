@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }) => {
         const status = await getLoginStatus(username, password);
         if (status === "loginSuccess") {
             setButtonVisible(false);
-            navigation.replace("CityList")
+            navigation.navigate("CityList")
         } else if (status === "usernameIncorrect") {
             setButtonVisible(false);
             setDialogBoxVisible(true);
@@ -85,38 +85,35 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <>
-           <View style={styles.container}>
+            <View style={styles.container}>
                 <View style={styles.content}>
                     <View style={styles.loginImage}>
                         <Image style={{ width: 100, height: 110 }} source={require('../Assets/wevoislogo.png')} />
                     </View>
 
                     <View style={styles.inputContainer}>
-                    <TextInput
-                        style={[styles.input, usernameError ? styles.inputError : null]}
-                        placeholder="Username"
-                        onChangeText={(text) => setUsername(text)}
-                        autoCapitalize='none'
-                    />
-                    {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
+                        <TextInput
+                            style={[styles.input, usernameError ? styles.inputError : null]}
+                            placeholder="Username"
+                            onChangeText={(text) => setUsername(text)}
+                            autoCapitalize='none'
+                        />
+                        {usernameError ? <Text style={styles.errorText}>{usernameError}</Text> : null}
 
-                    <TextInput
-                        style={[styles.input, passwordError ? styles.inputError : null]}
-                        placeholder="Password"
-                        secureTextEntry={true}
-                        onChangeText={(text) => setPassword(text)}
-                    />
+                        <TextInput
+                            style={[styles.input, passwordError ? styles.inputError : null]}
+                            placeholder="Password"
+                            secureTextEntry={true}
+                            onChangeText={(text) => setPassword(text)}
+                        />
                     </View>
                     {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
                     {buttonVisible ? (<ActivityIndicatorElement />) :
                         (<TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-                            <Text style={styles.buttonText}> 
-                            Login
-                          </Text>
-                           
-                     
-                           
+                            <Text style={styles.buttonText}>
+                                Login
+                            </Text>
                         </TouchableOpacity>)}
 
                     <CustomAlertDialog
@@ -179,7 +176,6 @@ const styles = StyleSheet.create({
         height: 50,
         fontSize: 17,
         color: ColorCode.black,
-       
     },
     inputError: {
         borderColor: ColorCode.red,
@@ -187,34 +183,25 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
         fontSize: 12,
-        marginBottom: 5,
+        marginBottom: 10,
+        marginTop:-20
     },
-    // loginButton: {
-    //     backgroundColor: ColorCode.primary,
-    //     padding: 10,
-    //     borderRadius: 5,
-    //     width: '100%',
-    //     height: 50,
-    // },
     loginButton: {
-        display:"flex",
+        display: "flex",
         width: '100%',
         backgroundColor: ColorCode.primary,
         borderRadius: 4,
         alignItems: 'center',
         justifyContent: 'center',
         height: 50,
-    
-
     },
     buttonText: {
-     marginTop:5,
+        marginTop: 5,
         color: ColorCode.white,
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom:10,
-    
+        marginBottom: 10,
     },
     activityContainer: {
         justifyContent: 'center',
@@ -238,9 +225,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 40
-
     },
-   
+
 });
 export default LoginScreen;
 

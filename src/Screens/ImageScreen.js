@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Pressable, Image, ActivityIndicator, BackHandler } from 'react-native';
 import backImage from "../Assets/back.png";
 import { ColorCode } from '../Services/colorCode';
-import { downloadImageUri } from '../Services/uploadImageService';
 
 const ImageScreen = ({ navigation, route }) => {
     const [imageUrl, setImageurl] = useState(null);
@@ -10,39 +9,51 @@ const ImageScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (route.params) {
-            const { imageName, indexKey } = route.params;
-            if (imageName !== undefined && indexKey !== undefined) {
-                downloadImageUri(indexKey, imageName).then((uri) => {
-                    if (uri !== null) {
-                        setLoading(false);
-                        setImageurl(uri);
-                    }
-                })
+            const { originalUri } = route.params;
+            if (originalUri !== undefined) {
+                setImageurl(originalUri);
             }
         }
+    }, [])
+
+    useEffect(() => {
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
+
     }, [])
     return (
         <View style={styles.container}>
             <View style={styles.header}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Pressable onPress={() => { navigation.navigate("UploadImage") }}>
+                    <Pressable onPress={() => navigation.navigate("UploadImage")}>
                         <Image style={styles.headerBackIcon} source={backImage} />
                     </Pressable>
                     <Text style={styles.headerText}>Images View</Text>
                 </View>
             </View>
 
-            {loading ? (
-                <ActivityIndicatorElement />
-            ) : imageUrl !== null ? (
-                <Image style={styles.image} source={{ uri: imageUrl }} />
-            ) : null}
+            {imageUrl !== null && (
+                <Image style={styles.image}
+                    source={{ uri: imageUrl }}
+                    onLoadStart={() => setLoading(true)}
+                    onLoadEnd={() => setLoading(false)} />
+            )}
+            {loading && <ActivityIndicatorElement />}
 
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
                     style={styles.button}
                     onPress={
-                        () => { navigation.navigate("UploadImage") }
+                        () => navigation.navigate("UploadImage")
                     }
                 >
                     <Text style={styles.buttonText}>Close</Text>
@@ -118,9 +129,8 @@ const styles = StyleSheet.create({
     },
     activityContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
+        height: '100%',
+        width: '100%',
     },
     indicatorContainer: {
         flexDirection: 'row',

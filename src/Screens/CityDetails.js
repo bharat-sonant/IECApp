@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler, Image } from 'react-native'
+import { StyleSheet, Text, View, FlatList, Dimensions, Pressable, BackHandler, Image, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import { fetchCityDetails } from '../Services/cityDetailsService'
@@ -8,6 +8,7 @@ const windowWidth = Dimensions.get('window').width;
 
 const CityDetails = ({ navigation }) => {
     const [cityDetails, setCitydetails] = useState([])
+    const [imageLoad, setImageLoad] = useState(true);
 
     useEffect(() => {
         fetchCityDetails().then((cityValue) => {
@@ -20,9 +21,7 @@ const CityDetails = ({ navigation }) => {
         }).catch((err) => {
             console.log("Error in City List: ", err);
         });
-    }, [])
-
-    useEffect(() => {
+        
         const backAction = () => {
             navigation.navigate("Login");
             return true;
@@ -34,27 +33,40 @@ const CityDetails = ({ navigation }) => {
         );
 
         return () => backHandler.remove();
-
     }, [])
-
 
     const renderItem = ({ item }) => {
         return (
-            // <View >
             <Pressable style={styles.cityContainer} onPress={() => { handleCitySelectButton(item) }}>
-                <Image style={{ width: 90, height: 90, marginTop: 15 }} source={{ uri: item.images }} />
+                {imageLoad && (<ActivityIndicator style={{
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginLeft: -20,
+                    marginTop: -20,
+                }}
+                    size={40}
+                    color={ColorCode.primary} />)}
+
+                <Image style={{
+                    width: 90,
+                    height: 90,
+                    marginTop: 15
+                }}
+                    source={{ uri: item.images }}
+                    onLoadEnd={() => setImageLoad(false)} />
+
                 <View style={styles.citys}>
                     <Text style={styles.text}>{item.cityName}</Text>
                 </View>
             </Pressable >
-            // </View>
         )
     }
 
     const handleCitySelectButton = async (item) => {
         handleCitySelect(item).then((status) => {
             if (status === "Success") {
-                navigation.replace("Dashboard");
+                navigation.navigate("Dashboard");
             }
         })
     }
@@ -85,7 +97,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        // height: 60,
         backgroundColor: ColorCode.primary,
         padding: 16,
     },
@@ -97,7 +108,6 @@ const styles = StyleSheet.create({
     cityContainer: {
         height: 150,
         width: windowWidth / 2 - 22,
-        // backgroundColor: ColorCode.primary,
         borderColor: ColorCode.primary,
         borderWidth: 2,
         marginHorizontal: 10,
@@ -111,7 +121,6 @@ const styles = StyleSheet.create({
         color: ColorCode.white,
         fontSize: 16,
         fontWeight: '500',
-        // backgroundColor:'red'
         textAlign: 'center',
 
     },

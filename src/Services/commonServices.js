@@ -43,9 +43,7 @@ export const CheckVersion = () => {
 export const getUserDetails = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const path = `Common/IECUserDetails.json`;
-            const url = await downloadImageFromStorage(path);
-
+            let url = `https://firebasestorage.googleapis.com/v0/b/dtdnavigator.appspot.com/o/Common%2FIECUserDetails.json?alt=media`;
             if (url !== null) {
                 const response = await fetch(url);
                 const data = await response.json();
@@ -60,9 +58,7 @@ export const getUserDetails = () => {
 export const getCityDetails = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            const path = `CityDetails/IECCityDetails.json`;
-            const url = await downloadImageFromStorage(path);
-
+            let url = `https://firebasestorage.googleapis.com/v0/b/dtdnavigator.appspot.com/o/CityDetails%2FIECCityDetails.json?alt=media`;
             if (url !== null) {
                 const response = await fetch(url);
                 const data = await response.json();

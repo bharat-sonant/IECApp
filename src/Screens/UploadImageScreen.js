@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Image, FlatList, Dimensions, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Image, FlatList, Dimensions, ActivityIndicator, BackHandler } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { ColorCode } from '../Services/colorCode'
 import backImage from "../Assets/back.png";
@@ -52,6 +52,23 @@ const UploadImageScreen = ({ navigation, route }) => {
                         });
                 }
             }
+            const backAction = () => {
+                if (route.params.buttonKey === "createEvent") {
+                    navigation.navigate("Dashboard")
+                } else {
+                    navigation.goBack();
+                }
+
+                return true;
+            };
+
+            const backHandler = BackHandler.addEventListener(
+                'hardwareBackPress',
+                backAction,
+            );
+
+            return () => backHandler.remove();
+
         }
     }, [isFocused, upload]);
 
@@ -71,7 +88,7 @@ const UploadImageScreen = ({ navigation, route }) => {
     };
 
     const handleImageView = (item) => {
-        navigation.navigate("ImageView", { imageName: item.imageName, indexKey: indexKey });
+        navigation.navigate("ImageView", { originalUri: item.originalUri });
     }
 
     const handleGoBack = () => {
@@ -80,7 +97,6 @@ const UploadImageScreen = ({ navigation, route }) => {
         } else if (buttonValueRoute === "createEvent") {
             navigation.navigate("Dashboard")
         }
-
     }
     return (
         <View style={styles.container}>
@@ -104,11 +120,11 @@ const UploadImageScreen = ({ navigation, route }) => {
                 (<>
                     <Card style={styles.card}>
                         <Text style={{
-                            fontSize: 15,
-                            color: ColorCode.transparentBlack,
+                            fontSize: 18,
+                            color: ColorCode.black,
                             marginTop: -20,
                             backgroundColor: ColorCode.white,
-                            width: "9%",
+                            width: "12%",
                             marginStart: 5,
                             fontWeight: '500',
                         }}>Title</Text>
@@ -190,9 +206,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     titleText: {
-        fontSize: 20,
-        color: ColorCode.black,
-        fontWeight: "500",
+        fontSize: 17,
+        color: ColorCode.transparentBlack,
     },
     imageStyle: {
         height: itemWidth,
@@ -231,6 +246,7 @@ const styles = StyleSheet.create({
         tintColor: ColorCode.primary
     },
 })
+
 
 
 

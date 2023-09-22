@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Pressable, BackHandler } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { getCurrentDateMonthYear } from '../Services/commonServices';
 import moment from 'moment';
@@ -48,7 +48,19 @@ const CreateEvent = ({ navigation, route }) => {
                 setIndexKey(key)
             }
         }
+        const backAction = () => {
+            navigation.goBack();
+            return true;
+        };
+
+        const backHandler = BackHandler.addEventListener(
+            'hardwareBackPress',
+            backAction,
+        );
+
+        return () => backHandler.remove();
     }, [])
+
 
     const handleSave = () => {
         setTitleError("");
@@ -115,16 +127,18 @@ const CreateEvent = ({ navigation, route }) => {
         let statusVal = await saveCreatedEvent(dataObject, datevalue, indexKey, previousDate);
         if (statusVal.status === "Success") {
             if (buttonValueRoute === "createNewEvent") {
-                setDialogBoxMessage("Event is created");
+                setDialogBoxMessage("Event is created Successfully");
                 setDialogBoxVisible(true);
                 setTitleError("");
                 setDescriptionError("")
                 setTitle("");
                 setDescription("");
+                setDateValue(new Date())
                 setIsSubmitVisible(false);
                 setButtonVisible(false);
             } else if (buttonValueRoute === "createEditEvent") {
-                navigation.goBack();
+                setDialogBoxMessage("Event is updated Successfully");
+                setDialogBoxVisible(true);
                 setButtonVisible(false);
                 setIsSubmitVisible(false);
             } else if (buttonValueRoute === "createCaptureEvent") {
@@ -151,6 +165,9 @@ const CreateEvent = ({ navigation, route }) => {
     }
 
     const handleClose = () => {
+        if (buttonValueRoute === "createEditEvent") {
+            navigation.navigate("EventList");
+        }
         setDialogBoxVisible(false);
     }
 
@@ -175,7 +192,6 @@ const CreateEvent = ({ navigation, route }) => {
                                 <DateTimePicker style={styles.datePicker} mode="date"
                                     value={new Date(datevalue)}
                                     onChange={handleDateChange}
-                                    minimumDate={new Date()}
                                 />
                             )}
                         </TouchableOpacity >

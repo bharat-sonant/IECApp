@@ -8,7 +8,7 @@ let initialApp = initializeApp(getFirebaseConfig("https://dtdnavigator.firebasei
 
 async function changeDatabaseUrl(dbPath, cityName) {
     try {
-        if (dbPath) {
+        if (dbPath && cityName) {
             const updatedConfig = getFirebaseConfig(dbPath);
             let updatedApp = initializeApp(updatedConfig, cityName);
 
@@ -24,11 +24,14 @@ export let database = getDatabase(initialApp);
 export let storage = getStorage(initialApp);
 
 (async () => {
-    const dbPath = await AsyncStorage.getItem("dbPath");
-    const cityName = await AsyncStorage.getItem("cityName");
-    await changeDatabaseUrl(dbPath, cityName);
+    try {
+        const dbPath = await AsyncStorage.getItem("dbPath");
+        const cityName = await AsyncStorage.getItem("cityName");
+        await changeDatabaseUrl(dbPath, cityName);
+    } catch (err) {
+        console.error("Error during initialization:", err);
+    }
 })();
-
 
 export const handleCitySelect = async (item) => {
     const cityName = item.cityName
@@ -51,4 +54,7 @@ export const handleCitySelect = async (item) => {
         console.error("Error handling city selection:", error);
     }
 };
+
+
+
 

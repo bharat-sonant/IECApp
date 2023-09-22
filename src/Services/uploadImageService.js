@@ -92,7 +92,6 @@ export const openGallery = (indexKey) => {
     });
 };
 
-
 export const getThumnailImages = (indexKey) => {
     return new Promise(async (resolve) => {
         const cityName = await AsyncStorage.getItem("cityName");
@@ -104,9 +103,9 @@ export const getThumnailImages = (indexKey) => {
             if (dataValue !== null) {
                 for (let key in dataValue) {
                     if (key !== "lastKey") {
-                        const filePathTemp = `${cityName}/IECActivity/EventImages/${indexKey}/Thumb/${dataValue[key]}`;
-                        let uri = await downloadImageFromStorage(filePathTemp);
-                        imageUriArray.push({ "imageUri": uri, "imageName": dataValue[key] });
+                        let uri = `https://firebasestorage.googleapis.com/v0/b/dtdnavigator.appspot.com/o/${cityName}%2FIECActivity%2FEventImages%2F${indexKey}%2FThumb%2F${dataValue[key]}?alt=media`;
+                        let originalUri = `https://firebasestorage.googleapis.com/v0/b/dtdnavigator.appspot.com/o/${cityName}%2FIECActivity%2FEventImages%2F${indexKey}%2FOriginal%2F${dataValue[key]}?alt=media`;
+                        imageUriArray.push({ "imageUri": uri, "originalUri": originalUri });
                     }
                 }
                 resolve(imageUriArray);
@@ -116,6 +115,7 @@ export const getThumnailImages = (indexKey) => {
         }
     });
 }
+
 
 export const downloadImageUri = (indexKey, imageName) => {
     return new Promise(async (resolve, reject) => {
@@ -132,10 +132,7 @@ export const downloadImageUri = (indexKey, imageName) => {
             } catch (err) {
                 reject(err)
             }
-
-
         }
-
     })
 }
 
